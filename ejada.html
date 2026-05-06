@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Ejada Systems | Protectt.ai — Strategic Partnership Dashboard</title>
+    <!-- Font & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        /* VARIABLES: Dark + Light theme */
+        :root {
+            --bg-dark: #0a0f1c;
+            --surface-dark: #111827;
+            --card-dark: #1a2332;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --border-dark: #1f2a3e;
+            --accent-cyan: #22d3ee;
+            --accent-green: #22c55e;
+            --accent-glow: rgba(34, 211, 238, 0.12);
+            --shadow-sm: 0 8px 20px rgba(0,0,0,0.35);
+            --table-hover: rgba(34,211,238,0.05);
+        }
+        body.light {
+            --bg-dark: #f4f7fd;
+            --surface-dark: #ffffff;
+            --card-dark: #ffffff;
+            --text-primary: #0b1e2e;
+            --text-secondary: #2c3e50;
+            --border-dark: #e2edf2;
+            --accent-glow: rgba(34,211,238,0.1);
+            --shadow-sm: 0 8px 20px rgba(0,0,0,0.03);
+            --table-hover: rgba(34,211,238,0.1);
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            transition: background 0.25s ease, color 0.2s ease;
+            line-height: 1.5;
+        }
+        /* DASHBOARD GRID: sticky sidebar */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+        /* SIDEBAR */
+        .sidebar {
+            background: var(--surface-dark);
+            border-right: 1px solid var(--border-dark);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            z-index: 20;
+        }
+        .logo-area h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .logo-area p {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 0.2rem;
+        }
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.6rem 1rem;
+            border-radius: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.85rem;
+        }
+        .nav-links a i { width: 1.4rem; font-size: 1rem; }
+        .nav-links a:hover, .nav-links a.active {
+            background: var(--accent-glow);
+            color: var(--accent-cyan);
+            border-left: 3px solid var(--accent-cyan);
+        }
+        .theme-toggle {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--card-dark);
+            padding: 0.6rem 1rem;
+            border-radius: 40px;
+            border: 1px solid var(--border-dark);
+        }
+        .toggle-switch {
+            width: 44px;
+            height: 22px;
+            background: #334155;
+            border-radius: 30px;
+            cursor: pointer;
+            position: relative;
+            transition: 0.2s;
+        }
+        .toggle-switch::after {
+            content: "";
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 3px;
+            transition: 0.2s;
+        }
+        body.light .toggle-switch::after {
+            left: 23px;
+            background: #0b1e2e;
+        }
+        body.light .toggle-switch { background: var(--accent-cyan); }
+        /* MAIN CONTENT */
+        .main-content {
+            padding: 2rem 2.5rem;
+            max-width: 1400px;
+        }
+        section {
+            scroll-margin-top: 1.8rem;
+            margin-bottom: 4rem;
+        }
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.2rem;
+            border-left: 4px solid var(--accent-cyan);
+            padding-left: 1rem;
+        }
+        .hero {
+            background: linear-gradient(135deg, rgba(34,211,238,0.08), rgba(34,197,94,0.03));
+            border-radius: 32px;
+            padding: 2.5rem 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-dark);
+        }
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, var(--accent-cyan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .btn-cta {
+            background: transparent;
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 0.7rem 1.8rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 1rem;
+        }
+        .btn-cta:hover {
+            background: var(--accent-cyan);
+            color: #0a0f1c;
+            box-shadow: 0 0 12px var(--accent-cyan);
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.8rem;
+            margin: 1.5rem 0;
+        }
+        .stat-card, .value-card {
+            background: var(--card-dark);
+            padding: 1.6rem;
+            border-radius: 24px;
+            border: 1px solid var(--border-dark);
+            transition: transform 0.2s;
+            box-shadow: var(--shadow-sm);
+        }
+        .arch-diagram {
+            background: var(--surface-dark);
+            border-radius: 28px;
+            padding: 1.8rem;
+            margin: 1.8rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            border-left: 5px solid var(--accent-cyan);
+        }
+        .arch-layer {
+            background: var(--card-dark);
+            padding: 1rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid var(--border-dark);
+        }
+        .timeline {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        .phase {
+            flex: 1;
+            background: var(--card-dark);
+            border-radius: 20px;
+            padding: 1.2rem;
+            text-align: center;
+        }
+        /* ACCORDION */
+        .accordion-item {
+            background: var(--card-dark);
+            border-radius: 20px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        .accordion-header {
+            padding: 1.2rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            background: var(--surface-dark);
+            border-bottom: 1px solid var(--border-dark);
+        }
+        .accordion-content {
+            max-height: 0;
+            padding: 0 1.5rem;
+            overflow: hidden;
+            transition: max-height 0.35s ease-out;
+        }
+        .accordion-item.active .accordion-content {
+            max-height: 450px;
+            padding: 1.2rem 1.5rem;
+        }
+        /* TABLE */
+        .stakeholder-table-wrapper {
+            overflow-x: auto;
+            border-radius: 24px;
+            background: var(--card-dark);
+            padding: 0.5rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+        th, td {
+            padding: 0.9rem 0.7rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-dark);
+        }
+        th { background: var(--surface-dark); color: var(--accent-cyan); }
+        tr:hover td { background: var(--table-hover); }
+        .priority-high { color: #f97316; font-weight: 600; }
+        .priority-medium { color: #eab308; }
+        .priority-low { color: #22c55e; }
+        .filter-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .filter-bar input, .filter-bar select {
+            background: var(--surface-dark);
+            border: 1px solid var(--border-dark);
+            padding: 0.6rem 1rem;
+            border-radius: 40px;
+            color: var(--text-primary);
+        }
+        .note-placeholder {
+            background: rgba(34,197,94,0.1);
+            padding: 0.6rem 1rem;
+            border-radius: 16px;
+            margin-top: 1rem;
+            font-size: 0.75rem;
+        }
+        .linkedin-msg {
+            background: var(--surface-dark);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            border-left: 4px solid var(--accent-green);
+        }
+        .flex-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        @media (max-width: 800px) {
+            .dashboard { grid-template-columns: 1fr; }
+            .sidebar { position: relative; height: auto; padding: 1rem; flex-direction: row; flex-wrap: wrap; gap: 1rem; }
+            .nav-links { flex-wrap: wrap; flex-direction: row; }
+            .main-content { padding: 1.5rem; }
+            .flex-2col { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard">
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="sidebar">
+        <div class="logo-area">
+            <h2>Ejada • Protectt.ai</h2>
+            <p>Strategic Intelligence • KSA Market Entry</p>
+        </div>
+        <nav class="nav-links" id="navLinks">
+            <a href="#hero-overview" data-section="hero-overview"><i class="fas fa-chart-line"></i> Overview</a>
+            <a href="#company-profile" data-section="company-profile"><i class="fas fa-building"></i> Company Profile</a>
+            <a href="#market-position" data-section="market-position"><i class="fas fa-chart-simple"></i> Market Position</a>
+            <a href="#why-ejada" data-section="why-ejada"><i class="fas fa-star-of-life"></i> Why Ejada</a>
+            <a href="#strategic-fit" data-section="strategic-fit"><i class="fas fa-puzzle-piece"></i> Strategic Fit</a>
+            <a href="#value-prop" data-section="value-prop"><i class="fas fa-hand-holding-usd"></i> Value Proposition</a>
+            <a href="#use-cases" data-section="use-cases"><i class="fas fa-shield-alt"></i> Use Cases</a>
+            <a href="#gtm-plan" data-section="gtm-plan"><i class="fas fa-road"></i> Go-To-Market</a>
+            <a href="#engagement" data-section="engagement"><i class="fas fa-handshake"></i> Engagement</a>
+            <a href="#stakeholders" data-section="stakeholders"><i class="fas fa-users"></i> Stakeholders</a>
+            <a href="#contact-strategy" data-section="contact-strategy"><i class="fas fa-comment-dots"></i> Contact Strategy</a>
+            <a href="#meeting-prep" data-section="meeting-prep"><i class="fas fa-clipboard-list"></i> Meeting Prep</a>
+            <a href="#exec-summary" data-section="exec-summary"><i class="fas fa-bullhorn"></i> Executive Summary</a>
+        </nav>
+        <div class="theme-toggle">
+            <span><i class="fas fa-moon"></i> Light mode</span>
+            <div class="toggle-switch" id="themeToggle"></div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <!-- Hero Section (Overview div) -->
+        <div class="hero" id="hero-overview">
+            <div class="hero-badge"><i class="fas fa-shield-haltered fa-2x" style="color:#22d3ee"></i> <i class="fas fa-charging-station fa-2x" style="color:#22c55e"></i></div>
+            <h1>Strategic Partnership Opportunity<br>Ejada Systems x Protectt.ai</h1>
+            <p style="font-size:1.1rem; margin-top:0.5rem">Market Entry Strategy · Runtime Mobile Protection for Saudi Arabia's Digital Banking</p>
+            <button class="btn-cta" id="exploreBtn"><i class="fas fa-arrow-right"></i> Explore Strategy</button>
+        </div>
+
+        <!-- COMPANY PROFILE (Ejada deep-dive) -->
+        <section id="company-profile">
+            <h2>Ejada Systems: Digital Transformation Orchestrator</h2>
+            <p style="margin-bottom:1rem">Founded 2005, Riyadh | <strong>System Integrator + Digital Partner</strong> with 20 years of MENA expertise, transitioning from apps integrator to strategic orchestrator of digital initiatives. Trusted by Saudi Vision 2030 projects.</p>
+            <div class="card-grid">
+                <div class="stat-card"><i class="fas fa-university"></i><h3>Banking & Finance</h3><p>Flagship client: <strong>Al Rajhi Bank</strong> (AI + ServiceNow transformation)[reference:1]; deep engagements with SNB, Riyad Bank.</p></div>
+                <div class="stat-card"><i class="fas fa-landmark"></i><h3>Government & Public Sector</h3><p>Mission-critical digital services, data & AI, cloud consulting.</p></div>
+                <div class="stat-card"><i class="fas fa-umbrella"></i><h3>Insurance & Enterprise</h3><p>End-to-end integrated platforms, fraud analytics, Insurtech modernisation.</p></div>
+            </div>
+            <div class="stat-card"><i class="fas fa-chart-line"></i> <strong>Business Model:</strong> Ejada combines project implementation, managed services, consulting, and reselling with global vendors (Huawei, Nutanix, Newgen) while holding top-tier trust at Kingdom level.</div>
+        </section>
+
+        <!-- MARKET POSITION -->
+        <section id="market-position">
+            <h2>Market Position & Influence</h2>
+            <div class="card-grid">
+                <div class="stat-card"><i class="fas fa-chart-line"></i> <strong>System Integrator (SI) + ISV</strong> — trusted by SAMA-regulated entities</div>
+                <div class="stat-card"><i class="fas fa-handshake"></i> <strong>Strategic partner</strong> for Al Rajhi's AI-first resilience blueprint</div>
+                <div class="stat-card"><i class="fas fa-database"></i> <strong>Digital influence:</strong> Ejada leads design/implementation core banking, omni-channel, fraud platforms.</div>
+            </div>
+        </section>
+
+        <!-- WHY EJADA (strategic) -->
+        <section id="why-ejada">
+            <h2>Why Ejada as a Gateway</h2>
+            <div class="flex-2col">
+                <div class="stat-card"><i class="fas fa-door-open"></i> <strong>Direct Tier-1 Bank Access</strong><br>25+ enterprise banking relationships, board-level cybersecurity engagements.</div>
+                <div class="stat-card"><i class="fas fa-microchip"></i> <strong>Technical Integration Power</strong><br>Integrate runtime layers into digital banking stacks, legacy core adapters.</div>
+                <div class="stat-card"><i class="fas fa-certificate"></i> <strong>Sovereign Trust</strong><br>National digital transformation initiatives, ISO 27001, NCEMA readiness.</div>
+                <div class="stat-card"><i class="fas fa-chart-simple"></i> <strong>Accelerated GTM</strong><br>Ejada's vendor ecosystem provides fast-track to banking proofs-of-concept.</div>
+            </div>
+        </section>
+
+        <!-- STRATEGIC FIT + PROTECTT.AI ARCHITECTURE -->
+        <section id="strategic-fit">
+            <h2>Strategic Fit: Protectt.ai + Ejada</h2>
+            <p>Protectt.ai delivers AI-native <strong>Runtime App Self-Protection (RASP)</strong> and behavioral monitoring, closing the gap that traditional WAF/SIEM systems miss at device level. Ejada embeds this as a solution component in digital banking projects.</p>
+            <div class="arch-diagram">
+                <div class="arch-layer"><i class="fas fa-mobile-alt fa-2x" style="color:#22d3ee"></i> <strong>📱 Mobile Banking App</strong> (Ejada's implementation)</div>
+                <div class="arch-layer"><i class="fas fa-shield-virus fa-2x" style="color:#22c55e"></i> <strong>🛡️ Protectt.ai Runtime Layer</strong><span style="font-size:0.75rem"> (RASP, device integrity, AI-behavioral monitoring & fraud signals)</span></div>
+                <div class="arch-layer"><i class="fas fa-server fa-2x" style="color:#22d3ee"></i> <strong>Backend Integration</strong><br>API Gateway & Fraud Risk Engine (Ejada orchestration)</div>
+                <div class="arch-layer"><i class="fas fa-building-columns fa-2x" style="color:#22c55e"></i> <strong>Core Banking & Payment Hub</strong></div>
+            </div>
+            <p>Ejada's insights combined with Protectt.ai's runtime telemetry create a new layer of proactive fraud prevention, aligned with SAMA's cybersecurity framework.</p>
+        </section>
+
+        <!-- VALUE PROPOSITION -->
+        <section id="value-prop">
+            <h2>Value Proposition: Partnership Impact</h2>
+            <div class="flex-2col">
+                <div class="stat-card"><i class="fas fa-chart-line"></i> <strong>For Banks</strong><br>✔ Runtime fraud reduction, device-level visibility<br>✔ Continuous compromise detection after enrollment<br>✔ Meet SAMA mobile security guidelines</div>
+                <div class="stat-card"><i class="fas fa-chart-simple"></i> <strong>For Ejada</strong><br>✔ Differentiated security layer in RFPs<br>✔ Recurring revenue (license + managed services)<br>✔ Enhanced board-level relevance for digital channels</div>
+            </div>
+        </section>
+
+        <!-- USE CASES Accordion: Critical with "Runtime Device Compromise After Enrollment" -->
+        <section id="use-cases">
+            <h2>Use Cases: Runtime Defense for Banking</h2>
+            <div class="accordion" id="accordionUseCases">
+                <div class="accordion-item"><div class="accordion-header">🔐 1. Runtime Device Compromise After Enrollment <i class="fas fa-chevron-down"></i></div><div class="accordion-content"><strong>Challenge:</strong> Device passes initial binding but becomes rooted/malware-infected post‑enrolment. Traditional backend sees "valid device". <strong>Attack scenario:</strong> Malware installed after onboarding, session hijacking, overlay attacks. <strong>Protectt.ai solution:</strong> Continuous runtime integrity checks, AI behavioral monitoring to detect rooting/emulator states even after login. <strong>Business impact:</strong> Blocks fraud from compromised sessions, reduces false trust, stops unauthorized transactions.</div></div>
+                <div class="accordion-item"><div class="accordion-header">📱 2. Transaction Manipulation & Overlay Protection <i class="fas fa-chevron-down"></i></div><div class="accordion-content"><strong>Problem:</strong> Man-in-the-middle / overlay attacks during transfer. <strong>Attack vector:</strong> Fake UI intercepts credentials & alters transaction. <strong>Solution:</strong> RASP layer screens runtime UI integrity. <strong>Impact:</strong> Eliminates beneficiary fraud, protects high-value transfers.</div></div>
+                <div class="accordion-item"><div class="accordion-header">⚠️ 3. App Tampering & Reverse Engineering Prevention <i class="fas fa-chevron-down"></i></div><div class="accordion-content"><strong>Problem:</strong> Modified APK / hooking frameworks (Frida). <strong>Attack:</strong> Steal API keys, bypass security controls. <strong>Solution:</strong> Runtime binary checks, environment attestation. <strong>Impact:</strong> Preserves app integrity, prevents cloned malicious apps.</div></div>
+                <div class="accordion-item"><div class="accordion-header">🔄 4. Session Hijacking & Emulator-based Fraud <i class="fas fa-chevron-down"></i></div><div class="accordion-content"><strong>Problem:</strong> Emulators disguised as real devices bypass MFA. <strong>Solution:</strong> Protectt.ai detects emulated environments & runtime anomalies. <strong>Impact:</strong> Reduces credential stuffing, stops synthetic identity attacks.</div></div>
+            </div>
+        </section>
+
+        <!-- Go-To-Market Plan -->
+        <section id="gtm-plan">
+            <h2>Go-To-Market Plan: Joint Pathway</h2>
+            <div class="timeline">
+                <div class="phase"><i class="fas fa-search"></i><br><strong>Phase 1: Discovery</strong><br>Ejada-led workshops with 2 priority banks</div>
+                <div class="phase"><i class="fas fa-cogs"></i><br><strong>Phase 2: Technical Alignment</strong><br>SDK integration & architecture validation</div>
+                <div class="phase"><i class="fas fa-flask"></i><br><strong>Phase 3: Pilot (POC)</strong><br>Runtime protection pilot on live banking channel</div>
+                <div class="phase"><i class="fas fa-chart-line"></i><br><strong>Phase 4: Scale</strong><br>Enterprise rollout, joint marketing & CoE</div>
+            </div>
+        </section>
+
+        <!-- Engagement Strategy -->
+        <section id="engagement">
+            <h2>Engagement Strategy: Partner-led, Not Vendor</h2>
+            <div class="stat-card">Positioning: Ejada as orchestrator, Protectt.ai as solution component. We co-present "Banking Runtime Defense" as a strategic module inside digital transformation projects, reducing fraud, and improving SAMA compliance. Insight-driven conversation: “How do you monitor device trust after enrollment?” Collaborating on innovation labs & executive briefings.</div>
+        </section>
+
+        <!-- KEY STAKEHOLDERS Interactive table (realistic sample data) -->
+        <section id="stakeholders">
+            <h2>Key Stakeholders (Ejada Systems)</h2>
+            <div class="filter-bar">
+                <input type="text" id="searchStakeholder" placeholder="🔍 Search name, role...">
+                <select id="prioritySelect"><option value="all">All Priorities</option><option value="High">High</option><option value="Medium">Medium</option><option value="Low">Low</option></select>
+            </div>
+            <div class="stakeholder-table-wrapper">
+                <table id="stakeholderTable">
+                    <thead><tr><th>Name</th><th>Title</th><th>Dept</th><th>Role in Decision</th><th>LinkedIn</th><th>Email</th><th>Mobile</th><th>Priority</th><th>Engagement Strategy</th></tr></thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+            <div class="note-placeholder"><i class="fas fa-info-circle"></i> All contact details are sample placeholders. Real data must be verified.</div>
+        </section>
+
+        <!-- Contact Strategy -->
+        <section id="contact-strategy">
+            <h2>Contact & Outreach Strategy</h2>
+            <p><strong>Preferred channels:</strong> LinkedIn strategic messaging → Warm introduction via Ejada relationship → Executive meeting.</p>
+            <div class="linkedin-msg">
+                <i class="fab fa-linkedin" style="color:var(--accent-cyan);"></i> <strong>LinkedIn template (Ejada decision-maker):</strong><br>
+                "Hi [Name], I’ve been following Ejada’s digital transformation leadership, especially the Al Rajhi AI initiative. We are helping banks protect mobile banking apps from runtime attacks that bypass traditional fraud engines. Would value 15 min to share insights on device‑level compromise detection."
+            </div>
+        </section>
+
+        <!-- Meeting Preparation -->
+        <section id="meeting-prep">
+            <h2>Meeting Preparation: Board-Ready</h2>
+            <div class="flex-2col">
+                <div class="stat-card"><i class="fas fa-laptop-code"></i> <strong>Prepare</strong><br>• Runtime protection demo (device tampering & detection)<br>• Architecture diagram + integration model<br>• 1 targeted use case (e.g., post‑enrolment compromise)</div>
+                <div class="stat-card"><i class="fas fa-ban"></i> <strong>Avoid</strong><br>• Aggressive product selling<br>• Too much technical noise without business context<br>• Ignoring Ejada's role as orchestrator</div>
+            </div>
+        </section>
+
+        <!-- Executive Summary: final -->
+        <section id="exec-summary">
+            <h2>Executive Summary & Strategic Recommendation</h2>
+            <div style="background: rgba(34,211,238,0.07); border-radius: 28px; padding:2rem; border:1px solid var(--border-dark);">
+                <p style="font-size:1rem"><strong>Ejada Systems = Gateway to KSA Tier-1 Banks</strong>. With 20 years of integration heritage and trusted footprint at Al Rajhi Bank and large government entities, Ejada can embed Protectt.ai's RASP layer into digital banking roadmaps. The gap in continuous runtime security after device enrollment is critical—Protectt.ai fills it. The result: reduced fraud, improved compliance, and stronger mobile channel trust.</p>
+                <div style="border-left: 4px solid var(--accent-green); margin-top:1.5rem; padding-left:1rem;"><strong>Strategic Recommendation:</strong> Formalize a solution integration partnership, launch a joint POC with Ejada's banking clients (starting with runtime compromise use case), and co‑sell to drive mobile security differentiation in Saudi Vision 2030.</div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+    // --- Smooth scroll & active section highlight ---
+    const sections = document.querySelectorAll('section[id], .hero');
+    const navA = document.querySelectorAll('.nav-links a');
+    function updateActive() {
+        let current = '';
+        const scrollPos = window.scrollY + 140;
+        sections.forEach(section => {
+            const top = section.offsetTop;
+            const height = section.clientHeight;
+            const id = section.getAttribute('id');
+            if(scrollPos >= top && scrollPos < top + height && id) current = id;
+        });
+        navA.forEach(link => {
+            link.classList.remove('active');
+            const href = link.getAttribute('href').substring(1);
+            if(href === current) link.classList.add('active');
+        });
+    }
+    window.addEventListener('scroll', updateActive);
+    window.addEventListener('load', updateActive);
+    
+    navA.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const id = link.getAttribute('href').substring(1);
+            const target = document.getElementById(id);
+            if(target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+    document.getElementById('exploreBtn').addEventListener('click', () => {
+        document.getElementById('strategic-fit').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Accordion
+    const accordions = document.querySelectorAll('.accordion-item');
+    accordions.forEach(item => {
+        const header = item.querySelector('.accordion-header');
+        header.addEventListener('click', () => item.classList.toggle('active'));
+    });
+
+    // Stakeholder table data (realistic sample, reflects Ejada structure)
+    const stakeholdersData = [
+        { name: "Khalid Al-Suwailem", title: "CISO", dept: "Cybersecurity", role: "Final Decision Maker", linkedin: "#", email: "khalid.cyber@ejada.com", mobile: "+966 5X XXX 1001", priority: "High", engagement: "Executive brief, runtime use case demo" },
+        { name: "Nouf Al-Mansour", title: "Head of Digital Banking Solutions", dept: "Digital Channels", role: "Budget Holder", linkedin: "#", email: "nouf.digital@ejada.com", mobile: "+966 5X XXX 1012", priority: "High", engagement: "Workshop: fraud reduction & banking POC" },
+        { name: "Faisal Al-Otaibi", title: "Enterprise Architect", dept: "Technology", role: "Technical Evaluator", linkedin: "#", email: "faisal.arch@ejada.com", mobile: "+966 5X XXX 2023", priority: "Medium", engagement: "Integration mapping & API security session" },
+        { name: "Hind Al-Ghamdi", title: "GM Financial Services", dept: "Banking Unit", role: "Influencer/Stakeholder", linkedin: "#", email: "hind.fs@ejada.com", mobile: "+966 5X XXX 3045", priority: "High", engagement: "Strategic value, SAMA alignment review" },
+        { name: "Abdullah Al-Rashid", title: "Partnerships Director", dept: "Alliances", role: "Entry Gate", linkedin: "#", email: "abdullah.partner@ejada.com", mobile: "+966 5X XXX 5678", priority: "Medium", engagement: "Partner onboarding, commercial agreement" }
+    ];
+    function renderTable(filter="", priority="all") {
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
+        const filtered = stakeholdersData.filter(s => {
+            const matchSearch = filter === '' || s.name.toLowerCase().includes(filter) || s.title.toLowerCase().includes(filter) || s.dept.toLowerCase().includes(filter);
+            const matchPriority = priority === 'all' || s.priority === priority;
+            return matchSearch && matchPriority;
+        });
+        filtered.forEach(s => {
+            const row = tbody.insertRow();
+            row.insertCell(0).innerText = s.name;
+            row.insertCell(1).innerText = s.title;
+            row.insertCell(2).innerText = s.dept;
+            row.insertCell(3).innerText = s.role;
+            row.insertCell(4).innerHTML = `<a href="#" target="_blank"><i class="fab fa-linkedin" style="color:#22d3ee"></i></a>`;
+            row.insertCell(5).innerHTML = `<i class="fas fa-envelope"></i> ${s.email}`;
+            row.insertCell(6).innerHTML = `<i class="fas fa-phone-alt"></i> ${s.mobile}`;
+            row.insertCell(7).innerHTML = `<span class="priority-${s.priority.toLowerCase()}">${s.priority}</span>`;
+            row.insertCell(8).innerText = s.engagement;
+        });
+    }
+    const searchInput = document.getElementById('searchStakeholder');
+    const priorityFilter = document.getElementById('prioritySelect');
+    function updateFilter() { renderTable(searchInput.value.toLowerCase(), priorityFilter.value); }
+    searchInput.addEventListener('input', updateFilter);
+    priorityFilter.addEventListener('change', updateFilter);
+    renderTable();
+
+    // THEME TOGGLE
+    const themeBtn = document.getElementById('themeToggle');
+    themeBtn.addEventListener('click', () => document.body.classList.toggle('light'));
+</script>
+</body>
+</html>
